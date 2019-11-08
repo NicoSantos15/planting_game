@@ -1,6 +1,13 @@
 package field;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.Scanner;
 
 import exceptions.FieldNotTilledException;
 import plants.Flower;
@@ -28,8 +35,7 @@ public class Field {
 		//TODO implement this method
 
 		try {
-			if(spaces == null) {
-
+			if(spaces[row][col] == null) {
 				for(int row2=0; row2<plant.length; row2++) {
 					for(int col2=0; col<plant[row2].length; col2++) {
 						if((row2==row)&&(col2==col))
@@ -54,6 +60,47 @@ public class Field {
 	public void writeToFile() {
 		// TODO Auto-generated method stub
 
+		String newString = toString();
+		try {
+			File file = new File("field.txt");
+			PrintWriter pw = new PrintWriter(file);
+//			pw.print(newString);
+			
+			
+			
+			int rowNum = 0;
+			int colNum = 0;
+
+			System.out.print(" ");
+			for(int row=0; row<spaces.length; row++) {
+				for(int col=0; col<spaces[row].length; col++) {
+					if(row == 0)
+						pw.print(" " + rowNum++);
+				}
+			}
+			pw.print("");
+
+			for(int row=0; row<spaces.length; row++) {
+				for(int col=0; col<spaces[row].length; col++) {
+					if(col == 0)
+						pw.print(colNum++);
+					if(spaces[row][col]==null)
+						pw.print(" .");
+					else if(spaces[row][col]!=null)
+						pw.print(" " + spaces[row][col].symbol);
+				}
+				pw.print("");
+			}
+			pw.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+
+
 	}
 
 
@@ -67,35 +114,29 @@ public class Field {
 
 	@Override
 	public String toString() {
-		
+		int rowNum = 0;
+		int colNum = 0;
+
+		System.out.print(" ");
 		for(int row=0; row<spaces.length; row++) {
 			for(int col=0; col<spaces[row].length; col++) {
-				if(spaces[row][col]==null)
-					System.out.println(".");
-				else
-				}
-		}
-
-
-		for(Plant[] row : spaces) {
-			if(spaces == null) 
-				return ".";
-			else
-				return "#";
-		}
-	}
-
-
-	/**
-	 * printField 
-	 * This method will print the field and execute the process of
-	 * inserting plant in the field
-	 */
-	public static void printRow(String[] row) {
-		for(String i:row) {
-			System.out.print(i);
-			System.out.print(" ");
+				if(row == 0)
+					System.out.print(" "+ rowNum++);
+			}
 		}
 		System.out.println();
+
+		for(int row=0; row<spaces.length; row++) {
+			for(int col=0; col<spaces[row].length; col++) {
+				if(col == 0)
+					System.out.print(colNum++);
+				if(spaces[row][col]==null)
+					System.out.print(" .");
+				else if(spaces[row][col]!=null)
+					System.out.print(" " + spaces[row][col].symbol);
+			}
+			System.out.println();
+		}
+		return "";
 	}
 }
