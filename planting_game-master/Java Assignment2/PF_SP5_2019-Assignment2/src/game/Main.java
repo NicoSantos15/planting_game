@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 import exceptions.BeyondStockException;
+import exceptions.NoAvailableSeedlingException;
 import exceptions.OutOfStockException;
 
 public class Main {
@@ -50,6 +51,57 @@ public class Main {
 	}
 
 
+//	public Plant plantArray (String plant) {
+//		ArrayList <Plant> newPlant = new ArrayList<>();
+//		Plant newestPlant = null;
+//		Flower flower = new Flower();
+//		Grain grain = new Grain();
+//		Vegetable vegetable = new Vegetable();
+//		Fruit fruit = new Fruit();
+//		String fullName = null;
+//
+//		newPlant.add(flower);
+//		newPlant.add(grain);
+//		newPlant.add(vegetable);
+//		newPlant.add(fruit);
+//
+//		switch (plant) {
+//		case "fl":
+//			fullName = "flower";
+//			break;
+//		case "fr":
+//			fullName = "fruit";
+//			break;
+//		case "g":
+//			fullName = "grain";
+//			break;
+//		case "v":
+//			fullName = "vegetables";
+//			break;
+//		default:
+//		}
+//
+//		for(int i=0; i<newPlant.size(); i++) {
+//			if(fullName.equals(newPlant.get(i).getPlantType())) {
+//				newestPlant = newPlant.get(i);
+//			}
+//		}
+//		return newestPlant;
+//	}
+	
+	
+	
+	public static boolean isInteger( String input ) {
+		try {
+			Integer.parseInt( input );
+			return true;
+		}
+		catch( Exception e ) {
+			return false;
+		}
+	}
+	
+
 	/**
 	 * buyPlants
 	 * This method receives a string of input from the console. It
@@ -60,14 +112,64 @@ public class Main {
 	 * @param inputString A string of input in the form "v,3 fl,6"
 	 */
 
-	private void buyPlants(String purchases) {
+	private void buyPlants(String str) {
 		// TODO Auto-generated method stub
-		String[] newString = purchases.split("\\s+");
-		for(String s : newString) {
-			System.out.println(s);
+
+		String[] newString = str.split(" ");
+		String[] plant;
+		String plantSpec = null;
+		int quantity = 0;
+		int counter = 0;
+		String fullName;
+
+		Flower flower = new Flower();
+		Grain grain = new Grain();
+		Vegetable vegetable = new Vegetable();
+		Fruit fruit = new Fruit();
+		Plant newPlant = null;
+
+		for(int i=0; i<newString.length; i++) {
+			plant = newString[i].split(",");
+			//System.out.println(newString[i]);
+			for(int j=0; j<plant.length; j++) {
+				if(j%2==0) {
+					plantSpec = plant[j];
+				}
+				else
+					quantity = Integer.parseInt(plant[j]);
+
+				try {
+					if(Nursery.buyPlant(plantSpec, quantity, player)==true){
+						switch (plantSpec) {
+						case "fl":
+							newPlant = flower;
+							break;
+						case "fr":
+							newPlant = fruit;
+							break;
+						case "g":
+							newPlant = grain;
+							break;
+						case "v":
+							newPlant = vegetable;
+							break;
+						default:
+						}
+						player.seedlings.add(newPlant);
+					}
+
+
+				} catch (BeyondStockException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (OutOfStockException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
-		
 	}
+
 
 	/**
 	 * plantPlants
@@ -81,7 +183,27 @@ public class Main {
 
 	private void plantPlants(String planting) {
 		// TODO Auto-generated method stub
+		String[] newString = planting.split(" ");
+		String[] plant;
+		int number = 0;
+		int row;
+		int col;
+		System.out.println(newString);
+		for(int i=0; i<newString.length; i++) {
+			plant = newString[i].split(",");
+			//			System.out.println(newString[i]);
+			for(int j=0; j<plant.length; j++) {
+				if(isInteger(plant[j])) {
+					number=Integer.parseInt(plant[j]);
+					if(j%2!=0) {
+						row = number;
 
+					}
+					else
+						col = number;
+				}
+			}
+		}
 	}
 
 	/**
@@ -304,11 +426,16 @@ public class Main {
 	 * Runs the main game loop.
 	 */
 	public static void main(String[] args) {
+
+
 		Main main = new Main();
+
+
+		System.out.print(main.plantArray("fl"));
+
+
 		main.field = new Field();
 		main.populateStartingField();
 		main.runGameLoop();
-		
-		main.buyPlants(fl wl);
 	}
 }

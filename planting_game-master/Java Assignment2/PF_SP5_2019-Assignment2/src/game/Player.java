@@ -50,11 +50,12 @@ public class Player {
 		case "v":
 			fullName = "vegetables";
 			break;
+		default:
 		}
 		
-		for(Plant item : seedlings)
-			if(fullName.equals(item.getPlantType())) {
-				newPlant = item;
+		for(int i=0; i<seedlings.size(); i++)
+			if(fullName.equals(seedlings.get(i).getPlantType())) {
+				newPlant = seedlings.get(i);
 				break;
 			}
 		
